@@ -11,7 +11,38 @@ class ProjectController extends Controller
 {
     public function index(Request $request)
     {
-        $projects = Project::with('attributeValues.attribute')->get();
+        $query = Project::query();
+
+        $filters = $request->query('filters', []);
+
+        $projectColumns = ['name', 'status', 'created_at', 'updated_at'];
+
+        foreach ($filters as $key => $rawValue) {
+            $operator = '=';
+            $value = $rawValue;
+
+            if (strpos($rawValue, ':') !== false) {
+                list($op, $val) = explode(':', $rawValue, 2);
+                $op = strtolower($op);
+                if (in_array($op, ['=', '>', '<', 'like'])) {
+                    $operator = ($op === 'like') ? 'LIKE' : $op;
+                    $value = $val;
+                }
+            }
+
+            if (in_array($key, $projectColumns)) {
+                $query->where($key, $operator, $value);
+            } else {
+                $query->whereHas('attributeValues', function ($q) use ($key, $operator, $value) {
+                    $q->join('attributes', 'attributes.id', '=', 'attribute_values.attribute_id')
+                      ->where('attributes.name', $key)
+                      ->where('attribute_values.value', $operator, $value);
+                });
+            }
+        }
+
+        $projects = $query->with('attributeValues.attribute')->get();
+
         return response()->json($projects);
     }
 
@@ -37,7 +68,6 @@ class ProjectController extends Controller
 
         $project = Project::create($request->only('name', 'status'));
 
-        // Retrieve dynamic attributes using the input() method
         $attributes = $request->input('attributes');
         if ($attributes && is_array($attributes)) {
             foreach ($attributes as $attribute_id => $value) {
@@ -101,21 +131,21 @@ class ProjectController extends Controller
         return response()->json(['message' => 'Project deleted successfully']);
     }
 
-    public function filter(Request $request)
-    {
-        $attribute_id = $request->query('attribute_id');
-        $value = $request->query('value');
+    // public function filter(Request $request)
+    // {
+    //     $attribute_id = $request->query('attribute_id');
+    //     $value = $request->query('value');
 
-        if (!$attribute_id || !$value) {
-            return response()->json(['error' => 'attribute_id and value are required for filtering'], 422);
-        }
+    //     if (!$attribute_id || !$value) {
+    //         return response()->json(['error' => 'attribute_id and value are required for filtering'], 422);
+    //     }
 
-        $projects = Project::whereHas('attributeValues', function($query) use ($attribute_id, $value) {
-            $query->where('attribute_id', $attribute_id)
-                  ->where('value', $value);
-        })->with('attributeValues.attribute')->get();
+    //     $projects = Project::whereHas('attributeValues', function($query) use ($attribute_id, $value) {
+    //         $query->where('attribute_id', $attribute_id)
+    //               ->where('value', $value);
+    //     })->with('attributeValues.attribute')->get();
 
-        return response()->json($projects);
-    }
+    //     return response()->json($projects);
+    // }
 
 }

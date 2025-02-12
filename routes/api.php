@@ -35,24 +35,24 @@ Route::middleware('auth:api')->group(function () {
         return response()->json(['message' => 'Authenticated Route Accessed']);
     });
 
-    Route::get('/projects',             [ProjectController::class, 'index']);
-    Route::get('/projects/filter',      [ProjectController::class, 'filter']); // e.g., ?attribute_id=1&value=Sales
-    Route::get('/projects/{id}',         [ProjectController::class, 'show']);
-    Route::post('/projects',            [ProjectController::class, 'store']);
-    Route::put('/projects/{id}',         [ProjectController::class, 'update']);
-    Route::delete('/projects/{id}',      [ProjectController::class, 'destroy']);
+    Route::get('/projects', [ProjectController::class, 'index']);
+    // Route::get('/projects/filter', [ProjectController::class, 'filter']);
+    Route::get('/projects/{id}', [ProjectController::class, 'show']);
+    Route::post('/projects', [ProjectController::class, 'store']);
+    Route::put('/projects/{id}', [ProjectController::class, 'update']);
+    Route::delete('/projects/{id}',[ProjectController::class, 'destroy']);
 
-    Route::get('/attributes',           [AttributeController::class, 'index']);
-    Route::get('/attributes/{id}',        [AttributeController::class, 'show']);
-    Route::post('/attributes',          [AttributeController::class, 'store']);
-    Route::put('/attributes/{id}',       [AttributeController::class, 'update']);
-    Route::delete('/attributes/{id}',    [AttributeController::class, 'destroy']);
+    Route::get('/attributes', [AttributeController::class, 'index']);
+    Route::get('/attributes/{id}',  [AttributeController::class, 'show']);
+    Route::post('/attributes', [AttributeController::class, 'store']);
+    Route::put('/attributes/{id}', [AttributeController::class, 'update']);
+    Route::delete('/attributes/{id}',[AttributeController::class, 'destroy']);
 
     Route::post('/projects/{id}/users', [ProjectUserController::class, 'addUser']);
 
-    Route::get('/timesheets',           [TimesheetController::class, 'index']);
-    Route::get('/timesheets/{id}',        [TimesheetController::class, 'show']);
-    Route::post('/timesheets',          [TimesheetController::class, 'store']);
-    Route::put('/timesheets/{id}',       [TimesheetController::class, 'update']);
-    Route::delete('/timesheets/{id}',    [TimesheetController::class, 'destroy']);
+    Route::get('/timesheets',[TimesheetController::class, 'index']);
+    Route::get('/timesheets/{id}', [TimesheetController::class, 'show']);
+    Route::post('/timesheets', [TimesheetController::class, 'store']);
+    Route::put('/timesheets/{id}', [TimesheetController::class, 'update']);
+    Route::delete('/timesheets/{id}',[TimesheetController::class, 'destroy']);
 });
