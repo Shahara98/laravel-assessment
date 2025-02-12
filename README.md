@@ -23,6 +23,7 @@ This Laravel Assessment Project is a RESTful API that demonstrates robust projec
 7. Open postman and import the collection `utils\Assesment.postman_collection.json`
 
 8. API documentation can be found on `https://documenter.getpostman.com/view/19280892/2sAYXCidqo`
+In the repo`utils\api_documentation`
 
 
 
