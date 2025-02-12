@@ -33,5 +33,25 @@ This Laravel Assessment Project is a RESTful API that demonstrates robust projec
 # Technology used
 1. php -> 8.0
 2. laravel -> 9.19
-3. mysql -> 10.4.32-MariaDB
+
+# Test Credentials for login
+"email": "sahara@gmail.com",
+"password": "password"
+
+# samples
+1. Register new user
+![alt text](utils/screenshots/register_user.png)
+
+2. Login as a registered user
+![alt text](utils/screenshots/login_user.png)
+
+3. Save the token returned after registration or login to a variable 'Bearer', This token will be used for other crud operations of models.
+![alt text](utils/screenshots/Bearer_variable.png)
+
+4. For all the other apis to be authenticated, add the following headers as shown in the image
+![alt text](utils/screenshots/headers.png)
+
+5. With provided header values provide the body data as per the requirement
+![alt text](utils/screenshots/list_projects.png)
+
 
